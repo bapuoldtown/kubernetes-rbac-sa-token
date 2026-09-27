@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: demo-sa
+  namespace: s3-rbac
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: probe
+  namespace: s3-rbac
+spec:
+  serviceAccountName: demo-sa        # wear THIS badge, not the default one
+  containers:
+    - name: app
+      image: bitnami/kubectl:latest  # kubectl inside, so we can swipe the badge
+      command: ["sleep", "3600"]

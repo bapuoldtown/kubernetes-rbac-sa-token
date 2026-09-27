@@ -1,0 +1,23 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-reader
+  namespace: s3-rbac
+rules:
+  - apiGroups: [""]              # "" = the core API group (pods live here)
+    resources: ["pods"]
+    verbs: ["get", "list"]      # ONLY read. no create, no delete.
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: demo-sa-can-read-pods
+  namespace: s3-rbac
+subjects:
+  - kind: ServiceAccount        # give the keycard to...
+    name: demo-sa               # ...our badge
+    namespace: s3-rbac
+roleRef:
+  kind: Role
+  name: pod-reader              # ...this keycard
+  apiGroup: rbac.authorization.k8s.io
